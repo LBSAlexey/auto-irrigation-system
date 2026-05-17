@@ -15,10 +15,13 @@ public:
   
   SystemControl() 
   {
-    systemStatusCheck(this->currentStatus);
+    systemStatusCheck();
   }
 
-  void systemStatusCheck(SystemStatus currentStatus); // Проверка на текущий статус системы
+  void setSystemStatus(SystemStatus currentStatus); // сеттер
+  SystemStatus getSystemStatus();
+
+  void systemStatusCheck(); // Проверка на текущий статус системы
   void systemStop();  // Алгоритм остановленной системы
   void systemRun();   // Алгоритм запущенной системы
   void systemError(); // Алгоритм системы в ошибке
@@ -29,7 +32,5 @@ public:
   SystemStatus systemErrorToStop(SystemStatus& currentStatus);
 
 };
-
-
 
 #endif

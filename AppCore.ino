@@ -1,11 +1,15 @@
 #include "SystemControl.h"
+#include <Wire.h>
+#include <RTClib.h>
 
+RTC_DS3231 rtc; // Инициализация объекта класса для RTC модуля
 SystemControl systemControl; // Инициализация объекта класса
 
 void setup() {
   Serial.begin(115200);
 
   /* Распиновка */ 
+
   // Дискретные входы:
   pinMode(static_cast<uint8_t>(DigitalPinsInput::ButtonStart), INPUT_PULLUP);
   pinMode(static_cast<uint8_t>(DigitalPinsInput::ButtonStop), INPUT_PULLUP); 
@@ -17,11 +21,29 @@ void setup() {
   pinMode(static_cast<uint8_t>(DigitalPinsOutput::RelayPit), OUTPUT);
   pinMode(static_cast<uint8_t>(DigitalPinsOutput::RelayBarrel), OUTPUT);
 
-  
+  /* Установка часов */
+
+  if (!rtc.begin()) {
+    Serial.println("Ошибка: модуль RTC не найден!");
+    while (1) 
+    {
+      systemControl.setSystemStatus(SystemStatus::ERROR);
+      systemControl.systemStatusCheck();
+    };  // Остановка выполнения при ошибке
+  }
+
+  // Если часы остановлены (например, села батарейка)
+  if (rtc.lostPower()) {
+    Serial.println("Питание RTC потеряно, устанавливаем время компиляции скетча");
+    // Устанавливаем время согласно моменту компиляции скетча
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    // Альтернатива: установка конкретных даты и времени:
+    // rtc.adjust(DateTime(2026, 5, 17, 14, 30, 0));
+  }
 }
 
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  digitalWrite(static_cast<uint8_t>(DigitalPinsOutput::RelayPit), HIGH);
+  digitalWrite(static_cast<uint8_t>(DigitalPinsOutput::RelayBarrel), HIGH);
 }
