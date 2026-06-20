@@ -13,7 +13,7 @@ private:
 
 public:
   
-  SystemControl() 
+  SystemControl() // конструктор
   {
     systemStatusCheck();
   }

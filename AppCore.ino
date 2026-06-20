@@ -1,6 +1,11 @@
-#include "SystemControl.h"
+/* Библиотеки */
 #include <Wire.h>
 #include <RTClib.h>
+#include "GyverNTC.h"
+
+/* Классы системы */
+#include "SystemControl.h" 
+
 
 RTC_DS3231 rtc; // Инициализация объекта класса для RTC модуля
 SystemControl systemControl; // Инициализация объекта класса
@@ -44,6 +49,5 @@ void setup() {
 
 
 void loop() {
-  digitalWrite(static_cast<uint8_t>(DigitalPinsOutput::RelayPit), HIGH);
-  digitalWrite(static_cast<uint8_t>(DigitalPinsOutput::RelayBarrel), HIGH);
+
 }

@@ -16,6 +16,7 @@ TankCondition TankControl::fillingTank()
 {
   while(true) 
   {
+    bool stopButton = digitalRead((uint8_t)DigitalPinsInput::ButtonStop);
     this->upperLevel = digitalRead((uint8_t)DigitalPinsInput::UpperLevel);
     this->lowerLevel = digitalRead((uint8_t)DigitalPinsInput::LowerLevel);
 
